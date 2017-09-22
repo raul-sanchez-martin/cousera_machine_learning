@@ -1,1 +1,1 @@
-# cousera_machine_learning
+# Machine Learning (Coursera)
