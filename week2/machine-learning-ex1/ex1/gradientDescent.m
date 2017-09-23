@@ -17,16 +17,16 @@ for iter = 1:num_iters
     %       of the cost function (computeCost) and gradient here.
     %
 
-
-
-
-
-
+    pred = X*theta;
+    err = pred - y;
+    theta = theta - alpha/m*X'*err;
+    curr_cost = computeCost(X, y, theta);
+    % printf("Iter number = %0.0f; Cost function = %0.3f \n",iter, curr_cost)
 
     % ============================================================
 
     % Save the cost J in every iteration    
-    J_history(iter) = computeCost(X, y, theta);
+    J_history(iter) = curr_cost;
 
 end
 
