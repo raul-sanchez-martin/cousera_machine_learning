@@ -30,11 +30,11 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
-
-
-
-
-
+z = X * all_theta';
+fprintf('z size: %f\t %f\n', size(z, 1), size(z, 2));
+prob = sigmoid(z);
+[values, idx] = max(prob');
+p = idx';
 
 % =========================================================================
 

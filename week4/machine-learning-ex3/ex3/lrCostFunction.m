@@ -39,7 +39,7 @@ grad = zeros(size(theta));
 
 
 pred = sigmoid(X*theta);
-theta1 = theta(2:end)
+theta1 = theta(2:end);
 J = 1/m*(-y'*log(pred)-(1-y')*log(1-pred)) + lambda/(2*m)*(theta1'*theta1);
 grad = 1/m*((pred-y)'*X) + lambda/m*[0, theta1'];
 
