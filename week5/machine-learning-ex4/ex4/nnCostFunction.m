@@ -63,22 +63,60 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+% fprintf('h size: %f\t %f\n', size(h, 1), size(h, 2));
+% Add the column of 1's
+X = [ones(m, 1) X];
 
 
+a_1 = X';
 
+z_2 = Theta1*a_1;
+a_2 = sigmoid(z_2);
+a_2 = [ones(1, size(a_2, 2)); a_2];
 
+z_3 = Theta2 * a_2;
+h = sigmoid(z_3)';
 
+y_k = zeros(m, num_labels);
+labels = 1:num_labels;
+y_k = y == labels;
 
+for curr_label = 1:num_labels
+  y_curr = y_k(:,curr_label);
+  pred = h(:,curr_label);
+  J = J + 1/m*(-y_curr'*log(pred)-(1-y_curr')*log(1-pred));
+endfor
 
+Theta1_1 = Theta1(:,2:end);
+Theta2_1 = Theta2(:,2:end);
 
+reg1 = sum(sum(Theta1_1.^2));
+reg2 = sum(sum(Theta2_1.^2));
 
+J = J + lambda/(2*m)*(reg1 + reg2);
 
+for t = 1:m
+  
+  a_1_ith = a_1(:,t);
+  z_2_ith = z_2(:,t);
+  a_2_ith = a_2(:,t);
+  z_3_ith = z_3(:,t);
+  a3_ith = h'(:,t);
+  yk_ith = y_k'(:,t);
+  
+  delta3 = a3_ith - yk_ith;
+  delta2 = Theta2'*delta3;
+  delta2 = delta2(2:end).*sigmoidGradient(z_2_ith);
+  Theta1_grad = Theta1_grad + delta2*a_1_ith';
+  Theta2_grad = Theta2_grad + delta3*a_2_ith';
+  
+endfor
 
+Theta1_grad = 1/m*Theta1_grad;
+Theta2_grad = 1/m*Theta2_grad;
 
-
-
-
-
+Theta1_grad = Theta1_grad + lambda/m*[zeros(size(Theta1_1, 1), 1) Theta1_1];
+Theta2_grad = Theta2_grad + lambda/m*[zeros(size(Theta2_1, 1), 1) Theta2_1];
 
 % -------------------------------------------------------------
 
